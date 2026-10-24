@@ -1,4 +1,5 @@
 # Distributed API Gateway & Rate-Limiting Platform
+[![Gateway CI](https://github.com/yi-lin-8324/distributed-api-gateway/actions/workflows/ci.yml/badge.svg)](https://github.com/yi-lin-8324/distributed-api-gateway/actions/workflows/ci.yml)
 
 A Java 21 / Spring Boot 4 gateway that authenticates API keys, forwards `GET /proxy/**` requests to a configurable upstream, and enforces **shared per-user and per-tenant rate limits** using Redis and an atomic Lua script.
 
