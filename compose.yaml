@@ -1,0 +1,49 @@
+
+services:
+  gateway:
+    image: gateway:local
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/gateway
+      SPRING_DATASOURCE_USERNAME: gateway
+      SPRING_DATASOURCE_PASSWORD: ${GATEWAY_DB_PASSWORD:?Set GATEWAY_DB_PASSWORD}
+
+      SPRING_DATA_REDIS_HOST: redis
+
+      UPSTREAM_BASEURL: http://host.docker.internal:8081
+
+      MANAGEMENT_OPENTELEMETRY_TRACING_EXPORT_OTLP_ENDPOINT: http://host.docker.internal:4318/v1/traces
+
+
+  gateway-2:
+    image: gateway:local
+    ports:
+      - "8084:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/gateway
+      SPRING_DATASOURCE_USERNAME: gateway
+      SPRING_DATASOURCE_PASSWORD: ${GATEWAY_DB_PASSWORD:?Set GATEWAY_DB_PASSWORD}
+
+      SPRING_DATA_REDIS_HOST: redis
+
+      UPSTREAM_BASEURL: http://host.docker.internal:8081
+
+      MANAGEMENT_OPENTELEMETRY_TRACING_EXPORT_OTLP_ENDPOINT: http://host.docker.internal:4318/v1/traces
+
+
+  redis:
+    image: redis:7-alpine
+
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: gateway
+      POSTGRES_USER: gateway
+      POSTGRES_PASSWORD: ${GATEWAY_DB_PASSWORD:?Set GATEWAY_DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+
+volumes:
+  postgres_data:
